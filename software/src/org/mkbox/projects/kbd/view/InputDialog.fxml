@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="100.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.mkbox.projects.kbd.view.InputDialog">
+   <center>
+      <Label text="Press new key" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </Label>
+   </center>
+   <bottom>
+      <Label fx:id="errLabel" textFill="RED" BorderPane.alignment="BOTTOM_RIGHT">
+         <BorderPane.margin>
+            <Insets right="5.0" />
+         </BorderPane.margin>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+   </bottom>
+</BorderPane>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="windows-1251">
+  <style>
+
+
+  html {
+      height: 100%;
+      overflow-y: scroll;
+  }
+  
+    body {
+      color: #656565;
+      font-family: "Roboto",sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.7em;
+    }
+    
+  h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+      color: inherit;
+      font-family: inherit;
+      font-weight: 500;
+      line-height: 1.1;
+  }
+
+  h2 {
+      color: #555555;
+      font-family: "Raleway",sans-serif;
+      font-size: 1.7em;
+      font-weight: 100;
+      line-height: 1em;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+      display: block;
+      margin-bottom: 10px;
+      margin-top: 25px;
+  }
+
+    h1 {
+      font-size: 2em;   
+    }
+    
+    ul {
+      margin: 0;
+  }
+    
+    ul li {
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      padding-left: 10px;
+      padding-right: 10px;
+  }
+  
+  ul li:last-child {
+      border: medium none;
+  }
+  
+  a {
+      color: #555555 !important;
+      font-size: 14px;
+  }
+  
+  a:hover {
+      color: #b3b3b3 !important;
+  }
+
+    .content {
+    
+    }
+   
+  .section {
+  	margin-top: 20px;
+  }
+  
+  .strong {
+  	font-weight: bold;
+  }
+
+  .keyboard{
+    width:640px; height: 250px;
+    margin: 0px auto;
+    color: #eee;
+  }
+
+  .key{
+    width:32px; height:40px;
+    display:block;
+    background-color:#333;
+    text-align: left;
+    padding-left: 8px;
+    line-height: 29px;
+    border-radius:2px;
+    float:left; margin-left: 2px;
+    margin-bottom:2px;
+    /*! transition: box-shadow 0.7s ease; */
+    font-size: 14px;
+  }
+  
+  .key.sup{
+  background-color: #34ab00;
+  }
+
+  .section-a{
+    width:520px; 
+    height:160px; 
+    float:left;
+  }
+  
+  .section-b{
+    width:120px; 
+    height:208px; 
+    float:left;
+  }
+
+  .function{
+    font-size: 12px; 
+    width:24px; 
+    height:30px; 
+    margin-bottom:15px;
+  }
+
+  .small{
+    font-size:10px; 
+    line-height:13px; 
+    text-align: center; 
+    padding:0 5px; 
+    padding-top:2px; 
+    height:28px !important;
+  }
+
+  .space1{
+    margin-right: 34px !important;
+  }
+
+  .space2{
+    margin-right: 20px !important;
+  }
+
+  .dual {
+    font-size: 14px; 
+    line-height: 20px; 
+    width:24px; 
+  }
+
+  .backspace {
+    width:65px; 
+    font-size: 12px;
+  }
+
+  .tab {
+    width: 40px; 
+    line-height: 40px; 
+    font-size:13px;
+  }
+
+  .letter{
+    width:24px;
+  }
+
+  .slash{
+    width:49px;
+  }
+
+  .caps{
+    width:56px; 
+    font-size:12px; 
+    line-height:18px;
+  }
+
+  .enter{
+    width:75px; 
+    line-height:40px; 
+    text-align: center; 
+    padding-left:0;
+  }
+
+  .shift.left{
+    width:74px;
+    line-height: 40px; 
+    font-size:13px;
+  }
+
+  .shift.right{
+    width: 83px;
+    line-height: 40px; 
+    font-size:13px;
+  }
+
+  .ctrl{
+    width: 42px; 
+  }
+
+  .space{
+    width:193px;
+  }
+
+  .arrows{
+    position:relative; 
+    top:42px;
+  }
+
+  .sec-func .key{
+    width: 26px; 
+    font-size:9px; 
+    text-align:left; 
+    line-height:40px; 
+    float:left;
+  }
+
+  .sec-func div.dual{
+    line-height:20px;
+  }
+
+  .arrows .key{
+    text-align: center; 
+    /*! padding-left: 7px; */ 
+    margin-left:2px;
+  }
+
+  .hidden{
+    visibility: hidden;
+  }
+  
+  </style>
+</head>
+<body>
+	<h1>MKkbd charset changer</h1>
+	<h2>Содержание</h2>
+	<ul class="content"> 
+		<li><a href="#Introduction">Вступление</a></li>
+		<li><a href="#Requirements">Требования</a></li>
+		<li><a href="#Modules">Зависимости</a></li>
+		<li><a href="#Installation">Установка</a></li>
+		<li><a href="#Configuration">Настройка</a></li>
+		<li><a href="#Troubleshooting">Возможные ошибки</a></li>
+		<li><a href="#FAQ">FAQ</a></li>
+	</ul>
+	
+	<h2 id="Introduction">Вступление</h2>
+	<div class="section">Данная программа предназначена для изменения раскладки контроллера кнопочных панелей. 
+	Контроллер поддерживает 4 раскладки, выбор активной производится путём установки перемычек J4:
+	<ul>
+		<li>1 раскладка - нет перемычек</li>
+		<li>2 раскладка - установлена первая перемычка</li>
+		<li>3 раскладка - установлена вторая перемычка</li>
+		<li>4 раскладка - установлены обе перемычки</li>
+	</ul>
+	Актуальную версию программы можно скачать на странице проекта - <a href="http://kbd.projects.mkbox.org">MKBox Workshop</a></div>
+	
+	<h2 id="Requirements">Требования</h2>
+	<div class="section">Программа поставляется в двух вариантах - только приложение, требующее установленного Java Runtime Environment (JRE) версии 1.8 и в виде пакета, содержащего все необходимые библиотеки для запуска. Второй вариант занимает значительно больше места на жёстком диске (при распаковке около 200Мб), чем первый (около 3Мб), но не требует дополнительного ПО.</div>
+	
+	<h2 id="Modules">Зависимости</h2>
+	<div class="section">В программе используются 2 сторонние библиотеки (включены в пакет и не требуют установки):
+	<ul>
+		<li>JNA - библиотека для простого доступа к нативным общим библиотекам без использования JNI <a href="https://github.com/java-native-access/jna">Java Native Access</a> (лицензии LGPL 2.1 и Apache License 2.0)</li>
+		<li>PureJavaHidApi - библиотека для кроссплатформенного доступа к HID устройствам, не требует установки фильтров для USB устройств и установки дополнительных приложений. Страница проекта <a href="https://github.com/nyholku/purejavahidapi">Pure Java HID-API</a> (лицензия BSD)</li>
+	</ul></div>
+	
+	<h2 id="Installation">Установка</h2>
+	<div class="section">Программа не требует установки и работает "из коробки".</div>
+	
+	<h2 id="Configuration">Настройка/Использование</h2>
+	<div class="section">Различные версии контроллеров используют разное количество клавиш, для того, чтобы получить количетсво используемых клавиш, нужно нажать кнопку <span class="strong">Connect</span> для получения настроек от контроллера.</div>
+	<div class="section">
+	Для начала редактирования раскладок необходимо сделать следующие действия:
+	<ul>
+		<li>нажмите клавишу <span class="strong">Edit layouts</span></li>
+		<li>сделайте двойной клик на ячейке, которую хотите изменить</li>
+		<li>после открытия окна нажмите клавишу на клавиатуре, которую хотите установить</li>
+	</ul>
+	Чтобы не изменять раскладки при каждом запуске программы, рекомендуется их сохранить, нажав кнопку <span class="strong">Save</span> (чтобы открыть сохранённый ранее файл, нажмите кнопку <span class="strong">Load</span>.
+	Для записи раскладок в контроллер необходимо выполнить следующее:
+	<ul>
+		<li>нажать кнопку <span class="strong">Connect</span>.</li>
+		<li>нажать кнопку <span class="strong">Write</span>.</li>
+	</ul>
+	Чтобы считать текущие настройки из контроллера:
+	<ul>
+		<li>нажать кнопку <span class="strong">Connect</span>.</li>
+		<li>нажать кнопку <span class="strong">Read</span>.</li>
+	</ul>
+	После нажатия кнопки <span class="strong">Connect</span> в случае успешного подключения к контроллеру изменится на кнопку <span class="strong">Disonnect</span> и станут активными кнопки <span class="strong">Read</span> и <span class="strong">Write</span>. При отключении контроллера или нажатии кнопки <span class="strong">Disconnect</span> кнопки <span class="strong">Read</span> и <span class="strong">Write</span> станут неактивными и появится кнопка <span class="strong">Connect</span>. 
+	Поддерживаемые клавиши отмечены зелёным</div>
+  <div class="keyboard">
+    <div class="section-a">
+      <div class="key sup function space1">Esc</div>
+      <div class="key sup function">F1</div>
+      <div class="key sup function">F2</div>
+      <div class="key sup function">F3</div>
+      <div class="key sup function space2">F4</div>
+      <div class="key sup function">F5</div>
+      <div class="key sup function">F6</div>
+      <div class="key sup function">F7</div>
+      <div class="key sup function space2">F8</div>
+      <div class="key sup function">F9</div>
+      <div class="key sup function">F10</div>
+      <div class="key sup function">F11</div>
+      <div class="key sup function">F12</div>
+      <!--END FUNCTION key supS -->
+
+      <div class="key sup num dual">~<br>`</div>
+      <div class="key sup num dual">!<br>1</div>
+      <div class="key sup num dual">@<br>2</div>
+      <div class="key sup num dual">#<br>3</div>
+      <div class="key sup num dual">$<br>4</div>
+      <div class="key sup num dual">%<br>5</div>
+      <div class="key sup num dual">^<br>6</div>
+      <div class="key sup num dual">&<br>7</div>
+      <div class="key sup num dual">*<br>8</div>
+      <div class="key sup num dual">(<br>9</div>
+      <div class="key sup num dual">)<br>0</div>
+      <div class="key sup num dual">_<br>-</div>
+      <div class="key sup num dual">+<br>=</div>
+      <div class="key sup backspace">Backspace</div>
+      <!--END NUMBER key supS -->
+
+      <div class="key sup tab">Tab</div>
+      <div class="key sup letter">Q</div>
+      <div class="key sup letter">W</div>
+      <div class="key sup letter">E</div>
+      <div class="key sup letter">R</div>
+      <div class="key sup letter">T</div>
+      <div class="key sup letter">Y</div>
+      <div class="key sup letter">U</div>
+      <div class="key sup letter">I</div>
+      <div class="key sup letter">O</div>
+      <div class="key sup letter">P</div>
+      <div class="key sup dual">{<Br>[</div>
+      <div class="key sup dual">}<br>]</div>
+      <div class="key sup letter dual slash">|<br>\</div>
+      <div class="key sup caps">Caps<br>Lock</div>
+      <div class="key sup letter">A</div>
+      <div class="key sup letter">S</div>
+      <div class="key sup letter">D</div>
+      <div class="key sup letter">F</div>
+      <div class="key sup letter">G</div>
+      <div class="key sup letter">H</div>
+      <div class="key sup letter">J</div>
+      <div class="key sup letter">K</div>
+      <div class="key sup letter">L</div>
+      <div class="key sup dual">:<br>;</div>
+      <div class="key sup dual">"<br>'</div>
+      <div class="key sup enter">Enter</div>
+
+      <div class="key shift left">Shift</div>
+      <div class="key sup letter">Z</div>  
+      <div class="key sup letter">X</div>
+      <div class="key sup letter">C</div>
+      <div class="key sup letter">V</div>
+      <div class="key sup letter">B</div>
+      <div class="key sup letter">N</div>
+      <div class="key sup letter">M</div>
+      <div class="key sup dual"><<br>,</div>
+      <div class="key sup dual">><br>.</div>
+      <div class="key sup dual">?<br>/</div>
+      <div class="key shift right">Shift</div>
+      <div class="key ctrl">Ctrl</div>
+      <div class="key">Win</div>
+      <div class="key">Alt</div>
+      <div class="key space"> </div>
+      <div class="key">Alt</div>
+      <div class="key">Win</div>
+      <div class="key">Men</div>
+      <div class="key ctrl">Ctrl</div>
+    </div><!-- end section-a-->
+
+    <div class="section-b">
+      <div class="key sup function small">Prnt Scrn</div>
+      <div class="key sup function small">Scroll Lock</div>
+      <div class="key sup function small">Pause Break</div>
+
+      <div class="sec-func">
+        <div class="key sup">Insert</div>
+        <div class="key sup">Home</div>
+        <div class="key sup dual">Page Up</div>
+        <div class="key sup">Del</div>
+        <div class="key sup">End</div>
+        <div class="key sup dual">Page Down</div>
+
+        <div class="arrows">
+          <div class="key hidden"> </div>
+          <div class="key sup">&uarr;</div>
+          <div class="key hidden"> </div>
+          <div class="key sup">&larr;</div>
+          <div class="key sup">&darr;</div>
+          <div class="key sup">&rarr;</div>
+        </div><!-- end arrows -->
+      </div><!-- end sec-func -->
+
+
+    </div><!-- end section-b-->
+
+  </div>
+
+	<h2 id="Troubleshooting">Возможные ошибки</h2>
+	<div class="section">Основные ошибки указываются в области журнала (расположена ниже таблицы с раскладками).</div>
+	
+	<h2 id="FAQ">FAQ</h2>
+	<div class="section"></div>
+	
+</body>
+</html>
