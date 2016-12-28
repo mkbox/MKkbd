@@ -1,12 +1,4 @@
-/* Name: main.c
- * Project: HID-Test
- * Author: Christian Starkjohann
- * Creation Date: 2006-02-02
- * Tabsize: 4
- * Copyright: (c) 2006 by OBJECTIVE DEVELOPMENT Software GmbH
- * License: GNU GPL v2 (see License.txt) or proprietary (CommercialLicense.txt)
- * This Revision: $Id$
- */
+// Project based on v-usb example HID-test by Christian Starkjohann
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -15,8 +7,6 @@
 
 #include "usbdrv.h"
 #include "oddebug.h"
-
-/* ----------------------- hardware I/O abstraction ------------------------ */
 
 /* pin assignments:
 PB0	Key 1
@@ -125,15 +115,6 @@ const PROGMEM char usbHidReportDescriptor[35] = {   /* USB report descriptor */
     0x81, 0x00,                    //   INPUT (Data,Ary,Abs)
     0xc0                           // END_COLLECTION
 };
-/* We use a simplifed keyboard report descriptor which does not support the
- * boot protocol. We don't allow setting status LEDs and we only allow one
- * simultaneous key press (except modifiers). We can therefore use short
- * 2 byte input reports.
- * The report descriptor has been created with usb.org's "HID Descriptor Tool"
- * which can be downloaded from http://www.usb.org/developers/hidpage/.
- * Redundant entries (such as LOGICAL_MINIMUM and USAGE_PAGE) have been omitted
- * for the second INPUT item.
- */
 
 /* Keyboard usage values, see usb.org's HID-usage-tables document, chapter
  * 10 Keyboard/Keypad Page for more codes.
@@ -229,9 +210,8 @@ uchar	usbFunctionSetup(uchar data[8])
 usbRequest_t    *rq = (void *)data;
 
     usbMsgPtr = reportBuffer;
-    if((rq->bmRequestType & USBRQ_TYPE_MASK) == USBRQ_TYPE_CLASS){    /* class request type */
+    if((rq->bmRequestType & USBRQ_TYPE_MASK) == USBRQ_TYPE_CLASS){
         if(rq->bRequest == USBRQ_HID_GET_REPORT){  /* wValue: ReportType (highbyte), ReportID (lowbyte) */
-            /* we only have one report type, so don't look at wValue */
             buildReport(keyPressed());
             return sizeof(reportBuffer);
         }else if(rq->bRequest == USBRQ_HID_GET_IDLE){
@@ -241,7 +221,7 @@ usbRequest_t    *rq = (void *)data;
             idleRate = rq->wValue.bytes[1];
         }
     }else{
-        /* no vendor specific requests implemented */
+        
     }
 	return 0;
 }
@@ -259,7 +239,7 @@ uchar   idleCounter = 0;
 	usbInit();
 	sei();
     DBG1(0x00, 0, 0);
-	for(;;){	/* main event loop */
+	for(;;){
 		wdt_reset();
 		usbPoll();
         key = keyPressed();
