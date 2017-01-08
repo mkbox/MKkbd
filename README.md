@@ -3,7 +3,7 @@ Programmable keyboard controller.
 
 Project based on V-USB library, firmware precompiled for atmega8a with 12MHz quartz.
 
-v1.x - controller supports up to 17 keys with 4 layouts, stored in EEMEM (you can switch between layouts by installing jumper link on board).
+v1.x - controller supports up to 13 keys with 4 layouts, stored in EEMEM (you can switch between layouts by installing jumper link on board).
 
 ## Installation
 Software part (charset changer) comes in 2 variants. 
