@@ -12,12 +12,16 @@
 /* ----------------------- hardware I/O abstraction ------------------------ */
 
 /* pin assignments:
-PB0	Key 1
-PB1	Key 2
-PB2	Key 3
-PB3	Key 4
-PB4	Key 5
-PB5 Key 6
+PD5	Key 1
+PD6	Key 2
+PD7	Key 3
+
+PB0	Key 4
+PB1	Key 5
+PB2 Key 6
+PB3 Key 14
+PB4 Key 15
+PB5 Key 16
 
 PC0	Key 7
 PC1	Key 8
@@ -25,16 +29,48 @@ PC2	Key 9
 PC3	Key 10
 PC4	Key 11
 PC5	Key 12
+PC6	Key 17
+
+PD1 Key 13
 
 PD0	USB-
-PD1	debug tx
 PD2	USB+ (int0)
-PD3	Key 13
-PD4	Key 14
-PD5	Key 15
-PD6	Key 16
-PD7	Key 17
+
+PD3 jumper 1
+PD4 jumper 2
 */
+
+#define REPORT_COUNT		128			//длина пакета
+#define NUM_KEYS			13			//дефолтное количество клавиш (максимум 13)
+#define MOD_CONTROL_LEFT    (1<<0)
+#define MOD_SHIFT_LEFT      (1<<1)
+#define MOD_ALT_LEFT        (1<<2)
+#define MOD_GUI_LEFT        (1<<3)
+#define MOD_CONTROL_RIGHT   (1<<4)
+#define MOD_SHIFT_RIGHT     (1<<5)
+#define MOD_ALT_RIGHT       (1<<6)
+#define MOD_GUI_RIGHT       (1<<7)
+#define COUNT_END			50
+#define COUNT_PERIOD		15
+
+uchar dKey = 4;						//дефолтное значение клавиши
+uchar keyCount = NUM_KEYS;			//количество клавиш дл€ формировани€ пакета
+uchar keyReport[NUM_KEYS + 1][2];	//массив клавиш
+uchar active_layout = 1;			//активна€ раскладка
+
+uchar eeprom_init = 0;
+uchar eeprom_len = 1;
+uchar eeprom_def = 2;
+uchar eeprom_lay1 = 3;
+uchar eeprom_lay2 = 3 + NUM_KEYS;
+uchar eeprom_lay3 = 3 + NUM_KEYS * 2;
+uchar eeprom_lay4 = 3 + NUM_KEYS * 3;
+
+static uchar    reportBuffer[3];    /* пакет дл€ клавиатуры */
+static uchar    idleRate;           /* in 4 ms units */
+static uchar	currentAddress;
+static uchar	bytesRemaining;
+static uchar	msgbuf[REPORT_COUNT+1];	//пакет настроек
 
 static void hardwareInit(void)
 {
@@ -45,13 +81,13 @@ uchar	i, j;
     PORTC = 0xff;   /* activate all pull-ups */
     DDRC = 0;       /* all pins input */
     PORTD = 0xfa;   /* 1111 1010 bin: activate pull-ups except on USB lines */
-    DDRD = 0x07;    /* 0000 0111 bin: all pins input except USB (-> USB reset) */
+    DDRD = 0x05;    /* 0000 0101 bin: all pins input except USB (-> USB reset) */
 	j = 0;
 	while(--j){     /* USB Reset by device only required on Watchdog Reset */
 		i = 0;
 		while(--i); /* delay >10ms for USB reset */
 	}
-    DDRD = 0x02;    /* 0000 0010 bin: remove USB reset condition */
+	DDRD = 0x00;   
     /* configure timer 0 for a rate of 12M/(1024 * 256) = 45.78 Hz (~22ms) */
     TCCR0 = 5;      /* timer 0 prescaler: 1024 */
 }
@@ -63,95 +99,113 @@ uchar	i, j;
  */
 static uchar    keyPressed(void)
 {
-	uchar   i, mask, x;
+	uchar   i, mask, ip, jp;
 
-	x = PINB;
-	mask = 1;
-	for(i=0;i<3;i++){
-		if((x & mask) == 0)
-		switch (i) {
-			case 0:
-				return 10;
-			case 1:
-				return 9;
-			case 2:
-				return 8;
-			default:
-				break;
-		}
-		mask <<= 1;
-	}
-	x = PINC;
 	mask = 1;
 	for(i=0;i<6;i++){
-		if((x & mask) == 0)
-		switch (i) {
-			case 0:
-				return 7;
-			case 1:
-				return 6;
-			case '2':
-				return 5;
-			case '3':
-				return 4;
-			case '4':
-				return 3;
-			case '5':
-				return 2;
-			default:
-				break;
+		if((PINB & mask) == 0){
+			ip = 0;
+			jp = 0;
+			while (ip < COUNT_END) {
+				if((PINB & mask) == 0) {
+					ip++;
+					jp = 0;
+				} else {
+					ip = 0;
+					jp++;
+				}
+				if (jp > COUNT_PERIOD) break;
+			}
+			if(ip>=COUNT_END)
+			switch (i) {
+				case 0:
+					return 4;
+				case 1:
+					return 5;
+				case 2:
+					return 6;
+/*				case 3:
+					return 14;
+				case 4:
+					return 15;
+				case 5:
+					return 16;
+*/				default:
+					break;
+			}
 		}
 		mask <<= 1;
 	}
-	x = PIND;
+	mask = 1;
+	for(i=0;i<7;i++){
+		if((PINC & mask) == 0){
+			ip = 0;
+			jp = 0;
+			while (ip < COUNT_END) {
+				if((PINC & mask) == 0) {
+					ip++;
+					jp = 0;
+				} else {
+					ip = 0;
+					jp++;
+				}
+				if (jp > COUNT_PERIOD) break;
+			}
+			if(ip>=COUNT_END)
+			switch (i) {
+				case 0:
+					return 7;
+				case 1:
+					return 8;
+				case 2:
+					return 9;
+				case 3:
+					return 10;
+				case 4:
+					return 11;
+				case 5:
+					return 12;
+/*				case 6:
+					return 17;
+*/				default:
+					break;
+			}
+		}
+		mask <<= 1;
+	}
 	mask = 1;
 	for(i=0;i<8;i++){
-		if((x & mask) == 0)
-		switch (i) {
-			case '1':
-				return 1;
-			case '5':
-				return 13;
-			case '6':
-				return 12;
-			case '7':
-				return 11;
-			default:
-				break;
+		if((PIND & mask) == 0){
+			ip = 0;
+			jp = 0;
+			while (ip < COUNT_END) {
+				if((PIND & mask) == 0) {
+					ip++;
+					jp = 0;
+				} else {
+					ip = 0;
+					jp++;
+				}
+				if (jp > COUNT_PERIOD) break;
+			}
+			if(ip>=COUNT_END)
+			switch (i) {
+				case 1:
+					return 13;
+				case 5:
+					return 1;
+				case 6:
+					return 2;
+				case 7:
+					return 3;
+				default:
+					break;
+			}
 		}
 		mask <<= 1;
 	}
 	return 0;
 }
-
-#define REPORT_COUNT 128			//длина пакета
-#define NUM_KEYS 13					//дефолтное количество клавиш (максимум 17)
-#define MOD_CONTROL_LEFT    (1<<0)
-#define MOD_SHIFT_LEFT      (1<<1)
-#define MOD_ALT_LEFT        (1<<2)
-#define MOD_GUI_LEFT        (1<<3)
-#define MOD_CONTROL_RIGHT   (1<<4)
-#define MOD_SHIFT_RIGHT     (1<<5)
-#define MOD_ALT_RIGHT       (1<<6)
-#define MOD_GUI_RIGHT       (1<<7)
-
-uchar dKey = 4;						//дефолтное значение клавиши
-uchar keyCount = NUM_KEYS;			//количество клавиш дл€ формировани€ пакета
-uchar keyReport[NUM_KEYS + 1][2];	//массив клавиш
-
-uchar EEMEM initFlag;				//флаг дефолтной автонастройки. 0 - автонастройка, 1 - данные берутс€ из пам€ти
-uchar EEMEM length;					//количество клавиш дл€ записи в пам€ть
-uchar EEMEM defaultKey;				//дефолтна€ клавиша дл€ записи в пам€ть
-uchar EEMEM lay1[NUM_KEYS];
-uchar EEMEM lay2[NUM_KEYS];
-uchar EEMEM lay3[NUM_KEYS];
-uchar EEMEM lay4[NUM_KEYS];
-
-static uchar    reportBuffer[3];    /* пакет дл€ клавиатуры */
-static uchar    idleRate;           /* in 4 ms units */
-static uchar	currentAddress;
-static uchar	bytesRemaining;
-static uchar	msgbuf[REPORT_COUNT+1];	//пакет настроек
 
 const PROGMEM char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] = {   /* USB report descriptor */
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
@@ -191,60 +245,64 @@ const PROGMEM char usbHidReportDescriptor[USB_CFG_HID_REPORT_DESCRIPTOR_LENGTH] 
 };
 
 //проверка установленных перемычек - ни одной перемычки дл€ 1 раскладки, лева€ дл€ 2, права€ дл€ 3, обе дл€ 4
-static int readConf() {
-	char p = 0;
-	
-	if (PIND & (1 << PD3)){
-		p |= (PIND & (1 << PD3)) >> PD3;
-	}
-	
-	if (PIND & (1 << PD4)){
-		p |= (PIND & (1 << PD4)) >> PD3;
-	}
-	
-	return p;
+static void readConf() {
+	char p;
+	p = 4;
+	p -= (PIND & (1 << 3)) >> 3;
+	p -= (PIND & (1 << 4)) >> 3;
+	active_layout = p;
 }
 
 //запись указанной раскладки в пам€ть
 static void writeLayout(uchar *layout, uchar layNum) {
 	switch (layNum) {
 		case 1:
-			eeprom_write_block(layout, & lay1, NUM_KEYS);
+			//eeprom_write_block(layout, (void *) eeprom_lay1, NUM_KEYS);
+			for (int i = 0; i < NUM_KEYS; i++) {
+				eeprom_write_byte( (uint8_t *) (eeprom_lay1 + i), layout[i]);
+			}
 			break;
 		case 2:
-			eeprom_write_block(layout, & lay2, NUM_KEYS);
+			//eeprom_write_block(layout, (void *) eeprom_lay2, NUM_KEYS);
+			for (int i = 0; i < NUM_KEYS; i++) {
+				eeprom_write_byte( (uint8_t *) (eeprom_lay2 + i), layout[i]);
+			}
 			break;
 		case 3:
-			eeprom_write_block(layout, & lay3, NUM_KEYS);
+			//eeprom_write_block(layout, (void *) eeprom_lay3, NUM_KEYS);
+			for (int i = 0; i < NUM_KEYS; i++) {
+				eeprom_write_byte( (uint8_t *) (eeprom_lay3 + i), layout[i]);
+			}
 			break;
 		case 4:
-			eeprom_write_block(layout, & lay4, NUM_KEYS);
+			//eeprom_write_block(layout, (void *) eeprom_lay4, NUM_KEYS);
+			for (int i = 0; i < NUM_KEYS; i++) {
+				eeprom_write_byte( (uint8_t *) (eeprom_lay4 + i), layout[i]);
+			}
 			break;
 	}
 }
 
 //чтение указанной раскладки из пам€ти
-static void readLayout(char p) {
+static void readLayout() {
 	uchar keys[NUM_KEYS];
-	if (p == 0)
-	p = readConf()+1;
-	switch (p) {
+	switch (active_layout) {
 		case 1:
-			eeprom_read_block(keys, &lay1, NUM_KEYS);
+			eeprom_read_block(keys, (const void *) (uintptr_t) eeprom_lay1, NUM_KEYS);
 			break;
 		case 2:
-			eeprom_read_block(keys, &lay2, NUM_KEYS);
+			eeprom_read_block(keys, (const void *) (uintptr_t) eeprom_lay2, NUM_KEYS);
 			break;
 		case 3:
-			eeprom_read_block(keys, &lay3, NUM_KEYS);
+			eeprom_read_block(keys, (const void *) (uintptr_t) eeprom_lay3, NUM_KEYS);
 			break;
 		case 4:
-			eeprom_read_block(keys, &lay4, NUM_KEYS);
+			eeprom_read_block(keys, (const void *) (uintptr_t) eeprom_lay4, NUM_KEYS);
 			break;
 		default:
-		for (int i=0; i<NUM_KEYS; i++) {
-			keys[i] = dKey;
-		}
+			for (int i=0; i<NUM_KEYS; i++) {
+				keys[i] = dKey;
+			}
 	}
 //заполнение массива клавиш выбранной раскладкой
 	keyReport[0][0] = 0;
@@ -259,27 +317,36 @@ static void readLayout(char p) {
 static void firstRun() {
 	uchar initial[NUM_KEYS];
 	//массив дефолтных клавиш
-	for(uchar i=0; i<NUM_KEYS; i++) {
+	/*for(uchar i=0; i<NUM_KEYS; i++) {
 		initial[i] = dKey + i;
+	}*/
+	initial[1] = 15;
+	initial[2] = 4;
+	initial[3] = 28;
+	initial[4] = 18;
+	initial[5] = 24;
+	initial[6] = 23;
+	for(uchar i=7; i<NUM_KEYS; i++) {
+		initial[i] = 41;
 	}
 	//установка флага инициализации в пам€ти
-	eeprom_write_byte(&initFlag, 1);
+	eeprom_write_byte( (uint8_t *) (uintptr_t) eeprom_init, 1);
 	//запись количества кнопок в пам€ть
-	eeprom_write_byte(&length, NUM_KEYS);
+	eeprom_write_byte( (uint8_t *) (uintptr_t) eeprom_len, NUM_KEYS);
 	//запись дефолтной клавиши в пам€ть
-	eeprom_write_byte(&defaultKey, dKey);
+	eeprom_write_byte( (uint8_t *) (uintptr_t) eeprom_def, dKey);
 	//запись раскладок
+	initial[0] = 30;
 	writeLayout(initial, 1);
+	initial[0] = 31;
 	writeLayout(initial, 2);
+	initial[0] = 32;
 	writeLayout(initial, 3);
+	initial[0] = 33;
 	writeLayout(initial, 4);
 	//заполнение массива клавиш
-	keyReport[0][0] = 0;
-	keyReport[0][1] = 0;
-	for (int i=0; i < NUM_KEYS; i++) {
-		keyReport[i+1][0] = 0;
-		keyReport[i+1][1] = initial[i];
-	}
+	readConf();
+	readLayout();
 }
 
 static void buildReport(uchar key)
@@ -296,18 +363,19 @@ static void buildFeatureReport() {
 	uchar l3[NUM_KEYS];
 	uchar l4[NUM_KEYS];
 	
-	eeprom_read_block(l1, &lay1, NUM_KEYS);
-	eeprom_read_block(l2, &lay2, NUM_KEYS);
-	eeprom_read_block(l3, &lay3, NUM_KEYS);
-	eeprom_read_block(l4, &lay4, NUM_KEYS);
+	eeprom_read_block(l1, (const void *) (uintptr_t) eeprom_lay1, NUM_KEYS);
+	eeprom_read_block(l2, (const void *) (uintptr_t) eeprom_lay2, NUM_KEYS);
+	eeprom_read_block(l3, (const void *) (uintptr_t) eeprom_lay3, NUM_KEYS);
+	eeprom_read_block(l4, (const void *) (uintptr_t) eeprom_lay4, NUM_KEYS);
 	
 	//обнуление буфера, 1 байт - кол-во клавиш, начина€ со 2 байта раскладки
 	memset(&msgbuf[0], 0xFF, sizeof(msgbuf));
 	memcpy(&msgbuf[0], &keyCount, sizeof(uchar));
-	memcpy(&msgbuf[1], l1, sizeof(uchar)*NUM_KEYS);
-	memcpy(&msgbuf[1+NUM_KEYS], l2, sizeof(uchar)*NUM_KEYS);
-	memcpy(&msgbuf[1+NUM_KEYS*2], l3, sizeof(uchar)*NUM_KEYS);
-	memcpy(&msgbuf[1+NUM_KEYS*3], l4, sizeof(uchar)*NUM_KEYS);
+	memcpy(&msgbuf[1], &active_layout, sizeof(uchar));
+	memcpy(&msgbuf[2], l1, sizeof(uchar)*NUM_KEYS);
+	memcpy(&msgbuf[2+NUM_KEYS], l2, sizeof(uchar)*NUM_KEYS);
+	memcpy(&msgbuf[2+NUM_KEYS*2], l3, sizeof(uchar)*NUM_KEYS);
+	memcpy(&msgbuf[2+NUM_KEYS*3], l4, sizeof(uchar)*NUM_KEYS);
 	
 }
 
@@ -325,12 +393,12 @@ static void parseFeatureReport() {
 		memcpy(&l3, &msgbuf[2+NUM_KEYS*2], NUM_KEYS);
 		memcpy(&l4, &msgbuf[2+NUM_KEYS*3], NUM_KEYS);
 	
-		eeprom_write_block(l1, &lay1, NUM_KEYS);
-		eeprom_write_block(l2, &lay2, NUM_KEYS);
-		eeprom_write_block(l3, &lay3, NUM_KEYS);
-		eeprom_write_block(l4, &lay4, NUM_KEYS);
+		eeprom_write_block(l1, (void *) (uintptr_t) eeprom_lay1, NUM_KEYS);
+		eeprom_write_block(l2, (void *) (uintptr_t) eeprom_lay2, NUM_KEYS);
+		eeprom_write_block(l3, (void *) (uintptr_t) eeprom_lay3, NUM_KEYS);
+		eeprom_write_block(l4, (void *) (uintptr_t) eeprom_lay4, NUM_KEYS);
 		
-		readLayout(readConf());
+		readLayout();
 	}
 }
 
@@ -346,6 +414,11 @@ uchar	usbFunctionSetup(uchar data[8]) {
 			bytesRemaining = REPORT_COUNT;
 			currentAddress = 0;
 			return USB_NO_MSG;
+		}else if(rq->bRequest == USBRQ_HID_GET_IDLE){
+			usbMsgPtr = &idleRate;
+			return 1;
+		}else if(rq->bRequest == USBRQ_HID_SET_IDLE){
+			idleRate = rq->wValue.bytes[1];
 		}
 	}else{
 	/* ignore vendor type requests, we don't use any */
@@ -387,18 +460,17 @@ uchar usbFunctionWrite(uchar *data, uchar len) {
 
 int	main(void)
 {
-uchar   key, lastKey = 0, keyDidChange = 0;
-uchar   idleCounter = 0;
+uchar   key, lastKey = 0, keyDidChange = 0, idleCounter = 0;
 	wdt_enable(WDTO_1S);
     hardwareInit();
 	//если флаг инициализации стоит - загружаем настройки
-	if(eeprom_read_byte(&initFlag) != 1) {
+	if(eeprom_read_byte( (uint8_t *) (uintptr_t) eeprom_init) != 1) {
 		firstRun();
 	} else {
-		readLayout(readConf());
+		readConf();
+		readLayout();
 	}
 	odDebugInit();
-	parseFeatureReport();
 	DBG1(0x00, 0, 0);
 	usbInit();
 	sei();
@@ -424,11 +496,9 @@ uchar   idleCounter = 0;
             }
         }
         if(keyDidChange && usbInterruptIsReady()){
-            keyDidChange = 0;
-            /* use last key and not current key status in order to avoid lost
-               changes in key status. */
-            buildReport(lastKey);
-            usbSetInterrupt(reportBuffer, sizeof(reportBuffer));
+			buildReport(key);
+			usbSetInterrupt(reportBuffer, sizeof(reportBuffer));
+			keyDidChange = 0;
         }
 	}
 	return 0;

@@ -70,7 +70,7 @@ the newest features and options.
  * it is required by the standard. We have made it a config option because it
  * bloats the code considerably.
  */
-#define USB_CFG_INTR_POLL_INTERVAL      10
+#define USB_CFG_INTR_POLL_INTERVAL      50
 /* If you compile a version with endpoint 1 (interrupt-in), this is the poll
  * interval. The value is in milliseconds and must not be less than 10 ms for
  * low speed devices.
@@ -79,7 +79,7 @@ the newest features and options.
 /* Define this to 1 if the device has its own power supply. Set it to 0 if the
  * device is powered from the USB bus.
  */
-#define USB_CFG_MAX_BUS_POWER           100
+#define USB_CFG_MAX_BUS_POWER           300
 /* Set this variable to the maximum USB bus power consumption of your device.
  * The value is in milliamperes. [It will be divided by two since USB
  * communicates power requirements in units of 2 mA.]
@@ -115,12 +115,12 @@ the newest features and options.
  * education only... DO NOT LET DEVICES WITH THIS VID ESCAPE YOUR LAB!
  * The Product-ID is a random number.
  */
-#define  USB_CFG_VENDOR_ID       0xc0, 0x16
+#define  USB_CFG_VENDOR_ID       0x09, 0x12
 /* USB vendor ID for the device, low byte first. If you have registered your
  * own Vendor ID, define it here. Otherwise you use obdev's free shared
  * VID/PID pair. Be sure to read USBID-License.txt for rules!
  */
-#define  USB_CFG_DEVICE_ID       0xdc, 0x06
+#define  USB_CFG_DEVICE_ID       0xa4, 0xa3
 /* This is the ID of the product, low byte first. It is interpreted in the
  * scope of the vendor ID. If you have registered your own VID with usb.org
  * or if you have licensed a PID from somebody else, define it here. Otherwise
@@ -140,7 +140,7 @@ the newest features and options.
  * obdev's free shared VID/PID pair. See the file USBID-License.txt for
  * details. 
  */
-#define USB_CFG_DEVICE_NAME     'K', 'e', 'y', 'b', 'o', 'a', 'r', 'd', ' ', 'v', '1', '.', '0'
+#define USB_CFG_DEVICE_NAME     'K', 'e', 'y', 'b', 'o', 'a', 'r', 'd', ' ', 'v', '1', '.', '1'
 #define USB_CFG_DEVICE_NAME_LEN 13
 /* Same as above for the device name. If you don't want a device name, undefine
  * the macros. See the file USBID-License.txt before you assign a name.

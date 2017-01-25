@@ -250,7 +250,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0xb4e
+.text           0x00000000      0xcbc
  *(.vectors)
  .vectors       0x00000000       0x26 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4/crtatmega8.o
                 0x00000000                __vector_default
@@ -352,55 +352,55 @@ END GROUP
                 0x000003a8                . = ALIGN (0x2)
  *(.text.*)
  .text.readConf
-                0x000003a8       0x2a main.o
+                0x000003a8       0x26 main.o
  .text.readLayout
-                0x000003d2       0xac main.o
- .text.parseFeatureReport
-                0x0000047e       0xb4 main.o
+                0x000003ce       0x9e main.o
+ .text.parseFeatureReport.part.0
+                0x0000046c       0xb0 main.o
  .text.usbFunctionSetup
-                0x00000532       0x24 main.o
-                0x00000532                usbFunctionSetup
+                0x0000051c       0x44 main.o
+                0x0000051c                usbFunctionSetup
  .text.usbFunctionRead
-                0x00000556      0x10a main.o
-                0x00000556                usbFunctionRead
+                0x00000560      0x11a main.o
+                0x00000560                usbFunctionRead
  .text.usbFunctionWrite
-                0x00000660       0x4c main.o
-                0x00000660                usbFunctionWrite
+                0x0000067a       0x54 main.o
+                0x0000067a                usbFunctionWrite
  .text.startup.main
-                0x000006ac      0x160 main.o
-                0x000006ac                main
+                0x000006ce      0x2ac main.o
+                0x000006ce                main
  .text.usbSetInterrupt
-                0x0000080c       0x44 usbdrv.o
-                0x0000080c                usbSetInterrupt
- .text.usbPoll  0x00000850      0x264 usbdrv.o
-                0x00000850                usbPoll
- .text.usbInit  0x00000ab4       0x1a usbdrv.o
-                0x00000ab4                usbInit
+                0x0000097a       0x44 usbdrv.o
+                0x0000097a                usbSetInterrupt
+ .text.usbPoll  0x000009be      0x264 usbdrv.o
+                0x000009be                usbPoll
+ .text.usbInit  0x00000c22       0x1a usbdrv.o
+                0x00000c22                usbInit
  .text.avr-libc
-                0x00000ace       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(memcpy.o)
-                0x00000ace                memcpy
+                0x00000c3c       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(memcpy.o)
+                0x00000c3c                memcpy
  .text.avr-libc
-                0x00000ae0        0xe c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(memset.o)
-                0x00000ae0                memset
+                0x00000c4e        0xe c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libc.a(memset.o)
+                0x00000c4e                memset
  .text.avr-libc
-                0x00000aee       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8.a(eerd_block.o)
-                0x00000aee                eeprom_read_block
-                0x00000af2                eeprom_read_blraw
+                0x00000c5c       0x20 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8.a(eerd_block.o)
+                0x00000c5c                eeprom_read_block
+                0x00000c60                eeprom_read_blraw
  .text.avr-libc
-                0x00000b0e       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8.a(eerd_byte.o)
-                0x00000b0e                eeprom_read_byte
+                0x00000c7c       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8.a(eerd_byte.o)
+                0x00000c7c                eeprom_read_byte
  .text.avr-libc
-                0x00000b1e       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8.a(eewr_block.o)
-                0x00000b1e                eeprom_write_block
+                0x00000c8c       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8.a(eewr_block.o)
+                0x00000c8c                eeprom_write_block
  .text.avr-libc
-                0x00000b30       0x1a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8.a(eewr_byte.o)
-                0x00000b30                eeprom_write_byte
-                0x00000b32                eeprom_write_r18
-                0x00000b4a                . = ALIGN (0x2)
+                0x00000c9e       0x1a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4\libatmega8.a(eewr_byte.o)
+                0x00000c9e                eeprom_write_byte
+                0x00000ca0                eeprom_write_r18
+                0x00000cb8                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000b4a        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
-                0x00000b4a                _exit
-                0x00000b4a                exit
+ .fini9         0x00000cb8        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+                0x00000cb8                _exit
+                0x00000cb8                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -419,81 +419,99 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000b4a        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
+ .fini0         0x00000cb8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/avr4\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000b4e                _etext = .
+                0x00000cbc                _etext = .
 
-.data           0x00800060        0x4 load address 0x00000b4e
+.data           0x00800060        0xc load address 0x00000cbc
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
- .data.keyCount
+ .data.eeprom_lay4
                 0x00800060        0x1 main.o
-                0x00800060                keyCount
- .data.dKey     0x00800061        0x1 main.o
-                0x00800061                dKey
+                0x00800060                eeprom_lay4
+ .data.eeprom_lay3
+                0x00800061        0x1 main.o
+                0x00800061                eeprom_lay3
+ .data.eeprom_lay2
+                0x00800062        0x1 main.o
+                0x00800062                eeprom_lay2
+ .data.eeprom_lay1
+                0x00800063        0x1 main.o
+                0x00800063                eeprom_lay1
+ .data.eeprom_def
+                0x00800064        0x1 main.o
+                0x00800064                eeprom_def
+ .data.eeprom_len
+                0x00800065        0x1 main.o
+                0x00800065                eeprom_len
+ .data.active_layout
+                0x00800066        0x1 main.o
+                0x00800066                active_layout
+ .data.keyCount
+                0x00800067        0x1 main.o
+                0x00800067                keyCount
+ .data.dKey     0x00800068        0x1 main.o
+                0x00800068                dKey
  .data.usbMsgLen
-                0x00800062        0x1 usbdrv.o
+                0x00800069        0x1 usbdrv.o
  .data.usbTxLen
-                0x00800063        0x1 usbdrv.o
-                0x00800063                usbTxLen
+                0x0080006a        0x1 usbdrv.o
+                0x0080006a                usbTxLen
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
-                0x00800064                . = ALIGN (0x2)
-                0x00800064                _edata = .
-                0x00800064                PROVIDE (__data_end, .)
+                0x0080006c                . = ALIGN (0x2)
+ *fill*         0x0080006b        0x1 
+                0x0080006c                _edata = .
+                0x0080006c                PROVIDE (__data_end, .)
 
-.bss            0x00800064       0xd9
-                0x00800064                PROVIDE (__bss_start, .)
+.bss            0x0080006c       0xdb
+                0x0080006c                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.msgbuf    0x00800064       0x81 main.o
+ .bss.msgbuf    0x0080006c       0x81 main.o
  .bss.bytesRemaining
-                0x008000e5        0x1 main.o
+                0x008000ed        0x1 main.o
  .bss.currentAddress
-                0x008000e6        0x1 main.o
+                0x008000ee        0x1 main.o
+ .bss.idleRate  0x008000ef        0x1 main.o
  .bss.reportBuffer
-                0x008000e7        0x3 main.o
+                0x008000f0        0x3 main.o
+ .bss.eeprom_init
+                0x008000f3        0x1 main.o
+                0x008000f3                eeprom_init
  .bss.usbMsgFlags
-                0x008000ea        0x1 usbdrv.o
+                0x008000f4        0x1 usbdrv.o
  *(COMMON)
- COMMON         0x008000eb       0x1c main.o
-                0x008000eb                keyReport
- COMMON         0x00800107       0x36 usbdrv.o
-                0x00800107                usbTxBuf
-                0x00800112                usbTxStatus1
-                0x0080011e                usbDeviceAddr
-                0x0080011f                usbRxToken
-                0x00800120                usbInputBufOffset
-                0x00800121                usbMsgPtr
-                0x00800123                usbRxLen
-                0x00800124                usbNewDeviceAddr
-                0x00800125                usbCurrentTok
-                0x00800126                usbConfiguration
-                0x00800127                usbRxBuf
-                0x0080013d                PROVIDE (__bss_end, .)
-                0x00000b4e                __data_load_start = LOADADDR (.data)
-                0x00000b52                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x008000f5       0x1c main.o
+                0x008000f5                keyReport
+ COMMON         0x00800111       0x36 usbdrv.o
+                0x00800111                usbTxBuf
+                0x0080011c                usbTxStatus1
+                0x00800128                usbDeviceAddr
+                0x00800129                usbRxToken
+                0x0080012a                usbInputBufOffset
+                0x0080012b                usbMsgPtr
+                0x0080012d                usbRxLen
+                0x0080012e                usbNewDeviceAddr
+                0x0080012f                usbCurrentTok
+                0x00800130                usbConfiguration
+                0x00800131                usbRxBuf
+                0x00800147                PROVIDE (__bss_end, .)
+                0x00000cbc                __data_load_start = LOADADDR (.data)
+                0x00000cc8                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080013d        0x0
+.noinit         0x00800147        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x0080013d                _end = .
+                0x00800147                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
-.eeprom         0x00810000       0x37
+.eeprom         0x00810000        0x0
  *(.eeprom*)
- .eeprom        0x00810000       0x37 main.o
-                0x00810000                lay4
-                0x0081000d                lay3
-                0x0081001a                lay2
-                0x00810027                lay1
-                0x00810034                defaultKey
-                0x00810035                length
-                0x00810036                initFlag
-                0x00810037                __eeprom_end = .
+                0x00810000                __eeprom_end = .
 
 .fuse
  *(.fuse)
@@ -566,44 +584,44 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1b3b
+.debug_info     0x00000000     0x1aad
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x48c c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4/crtatmega8.o
- .debug_info    0x0000048c      0xca7 main.o
- .debug_info    0x00001133      0x998 usbdrv.o
- .debug_info    0x00001acb       0x70 usbdrvasm.o
+ .debug_info    0x0000048c      0xc08 main.o
+ .debug_info    0x00001094      0x998 usbdrv.o
+ .debug_info    0x00001a2c       0x81 usbdrvasm.o
 
-.debug_abbrev   0x00000000      0xb04
+.debug_abbrev   0x00000000      0xb0d
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x44e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4/crtatmega8.o
- .debug_abbrev  0x0000044e      0x37f main.o
- .debug_abbrev  0x000007cd      0x323 usbdrv.o
- .debug_abbrev  0x00000af0       0x14 usbdrvasm.o
+ .debug_abbrev  0x0000044e      0x388 main.o
+ .debug_abbrev  0x000007d6      0x323 usbdrv.o
+ .debug_abbrev  0x00000af9       0x14 usbdrvasm.o
 
-.debug_line     0x00000000     0x1044
+.debug_line     0x00000000     0x1168
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000       0x1a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4/crtatmega8.o
- .debug_line    0x0000001a      0x4fc main.o
- .debug_line    0x00000516      0x360 usbdrv.o
- .debug_line    0x00000876      0x7ce usbdrvasm.o
+ .debug_line    0x0000001a      0x620 main.o
+ .debug_line    0x0000063a      0x360 usbdrv.o
+ .debug_line    0x0000099a      0x7ce usbdrvasm.o
 
 .debug_frame    0x00000000      0x148
  *(.debug_frame)
  .debug_frame   0x00000000       0xf0 main.o
  .debug_frame   0x000000f0       0x58 usbdrv.o
 
-.debug_str      0x00000000      0x7cc
+.debug_str      0x00000000      0x811
  *(.debug_str)
  .debug_str     0x00000000      0x17a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/4.9.2/../../../../avr/lib/avr4/crtatmega8.o
- .debug_str     0x0000017a      0x3d9 main.o
-                                0x41b (size before relaxing)
- .debug_str     0x00000553      0x279 usbdrv.o
-                                0x4ea (size before relaxing)
+ .debug_str     0x0000017a      0x428 main.o
+                                0x471 (size before relaxing)
+ .debug_str     0x000005a2      0x26f usbdrv.o
+                                0x4fb (size before relaxing)
 
-.debug_loc      0x00000000      0xeca
+.debug_loc      0x00000000      0xf76
  *(.debug_loc)
- .debug_loc     0x00000000      0x56f main.o
- .debug_loc     0x0000056f      0x95b usbdrv.o
+ .debug_loc     0x00000000      0x61b main.o
+ .debug_loc     0x0000061b      0x95b usbdrv.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -623,10 +641,10 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0xc8
+.debug_ranges   0x00000000       0xe0
  *(.debug_ranges)
- .debug_ranges  0x00000000       0x40 main.o
- .debug_ranges  0x00000040       0x88 usbdrv.o
+ .debug_ranges  0x00000000       0x58 main.o
+ .debug_ranges  0x00000058       0x88 usbdrv.o
 
 .debug_macro
  *(.debug_macro)
