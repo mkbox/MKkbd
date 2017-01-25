@@ -48,8 +48,8 @@ public class MainApp extends Application {
 	private HidDeviceInfo deviceInfo;
 	private HidDevice device;
 	private ArrayList<String> messages;
-	private final short vid = 0x16C0;
-	private final short pid = 0x06DC;
+	private final short vid = (short) 0x1209;
+	private final short pid = (short) 0xA3A4;
 	private int keyCount = 12;
 	private final int reportSize = 128;
 	private Timer timer;
@@ -289,7 +289,7 @@ public class MainApp extends Application {
 		}
 		return devInfo;
 	}
-	
+
 	public HidDeviceInfo getDevice() {
 		return this.deviceInfo;
 	}
@@ -375,6 +375,7 @@ public class MainApp extends Application {
 				}
 			});
 			dialogStage.initStyle(StageStyle.UNDECORATED);
+			dialogStage.centerOnScreen();
 			dialogStage.showAndWait();
 			return controller.isKeyFound();
 		} catch (IOException e) {
@@ -495,7 +496,9 @@ public class MainApp extends Application {
 					}
 				});
 				messages.add("Device connected.");
-				int newCount = getKeyNum(getFeatureReport());
+				byte[] report = getFeatureReport();
+				int newCount = getKeyNum(report);
+				int aciveLayout = getActiveLayout(report);
 				if((newCount > 0) && (newCount != keyCount)){
 					if(newCount > keyCount) {
 						for(int i = keyCount; i < newCount; i++){
@@ -556,6 +559,17 @@ public class MainApp extends Application {
 		return null;
 	}
 	
+	public Integer getActiveLayout(byte[] data) {
+		if(data != null){
+			data = Arrays.copyOfRange(data, 1, 2);
+			messages.add("Active layout: "+data[0]+".");
+			return (int) data[0];
+		} else {
+			messages.add("Unable to get active layout number.");
+			return 0;
+		}
+	}
+	
 	public Integer getKeyNum(byte[] data) {
 		if(data != null){
 			data = Arrays.copyOfRange(data, 0, 1);
@@ -569,7 +583,7 @@ public class MainApp extends Application {
 	
 	public void readLayouts(byte[] data) {
 		if(data != null){
-			data = Arrays.copyOfRange(data, 1, data.length-1);
+			data = Arrays.copyOfRange(data, 2, data.length-1);
 			keyData.clear();
 			int i0, i1, i2, i3;
 			for (int i = 0; i < keyCount; i++) {
