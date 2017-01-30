@@ -12,7 +12,7 @@ First one is standalone package with jre included and doesn't require any third-
 
 Second package contains only app itself and you must have jre 1.8 installed.
 
-## Hardware/firmaware notice
+## Hardware/firmware notice
 PCB and schematic projects made in DipTrace software.
 Main project is Atmel Studio 7
 When flashing avr make sure you using right fuses (there 2 xml files included, one for use with bootloader and another without)
