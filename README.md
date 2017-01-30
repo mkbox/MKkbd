@@ -14,8 +14,11 @@ Second package contains only app itself and you must have jre 1.8 installed.
 
 ## Hardware/firmware notice
 PCB and schematic projects made in DipTrace software.
-Main project is Atmel Studio 7
-When flashing avr make sure you using right fuses (there 2 xml files included, one for use with bootloader and another without)
+
+Main project is Atmel Studio 7.
+
+When flashing avr make sure you using right fuses (there 2 xml files included, one for use with bootloader and another without).
+
 Bootloader made by obdev (https://www.obdev.at/products/vusb/bootloadhid.html) and just configured for my project, to activate bootloader set up jumper in appropriate position.
 
 ### Jumper positions:
@@ -25,8 +28,8 @@ Bootloader made by obdev (https://www.obdev.at/products/vusb/bootloadhid.html) a
 lay1 | lay2 | lay3 | lay4 | boot
  
 ## TODO
-code nice button debounce
-make v2.x board, that supply only 12 keys but includes programmable led lights on buttons.
+- [ ] code nice button debounce
+- [ ] make v2.x board, that supply only 12 keys but includes programmable led lights on buttons.
 
 ## License
 GNU GPL V3 (see LICENSE)
