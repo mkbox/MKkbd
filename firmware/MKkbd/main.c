@@ -39,7 +39,6 @@ PD2	USB+ (int0)
 PD3 jumper 1
 PD4 jumper 2
 */
-
 #define REPORT_COUNT		128			//длина пакета
 #define NUM_KEYS			13			//дефолтное количество клавиш (максимум 13)
 #define MOD_CONTROL_LEFT    (1<<0)
@@ -72,8 +71,7 @@ static uchar	currentAddress;
 static uchar	bytesRemaining;
 static uchar	msgbuf[REPORT_COUNT+1];	//пакет настроек
 
-static void hardwareInit(void)
-{
+static void hardwareInit(void) {
 uchar	i, j;
 
     PORTB = 0xff;   /* activate all pull-ups */
@@ -89,7 +87,8 @@ uchar	i, j;
 	}
 	DDRD = 0x00;   
     /* configure timer 0 for a rate of 12M/(1024 * 256) = 45.78 Hz (~22ms) */
-    TCCR0 = 5;      /* timer 0 prescaler: 1024 */
+    TCCR0 = (1<<CS12)|(0<<CS11)|(1<<CS10);      /* timer 0 prescaler: 1024 */
+	
 }
 
 /* ------------------------------------------------------------------------- */
@@ -97,26 +96,12 @@ uchar	i, j;
 /* The following function returns an index for the first key pressed. It
  * returns 0 if no key is pressed.
  */
-static uchar    keyPressed(void)
-{
-	uchar   i, mask, ip, jp;
+static uchar    keyPressed(void) {
+	uchar   i, mask;
 
 	mask = 1;
 	for(i=0;i<6;i++){
 		if((PINB & mask) == 0){
-			ip = 0;
-			jp = 0;
-			while (ip < COUNT_END) {
-				if((PINB & mask) == 0) {
-					ip++;
-					jp = 0;
-				} else {
-					ip = 0;
-					jp++;
-				}
-				if (jp > COUNT_PERIOD) break;
-			}
-			if(ip>=COUNT_END)
 			switch (i) {
 				case 0:
 					return 4;
@@ -139,19 +124,6 @@ static uchar    keyPressed(void)
 	mask = 1;
 	for(i=0;i<7;i++){
 		if((PINC & mask) == 0){
-			ip = 0;
-			jp = 0;
-			while (ip < COUNT_END) {
-				if((PINC & mask) == 0) {
-					ip++;
-					jp = 0;
-				} else {
-					ip = 0;
-					jp++;
-				}
-				if (jp > COUNT_PERIOD) break;
-			}
-			if(ip>=COUNT_END)
 			switch (i) {
 				case 0:
 					return 7;
@@ -176,19 +148,6 @@ static uchar    keyPressed(void)
 	mask = 1;
 	for(i=0;i<8;i++){
 		if((PIND & mask) == 0){
-			ip = 0;
-			jp = 0;
-			while (ip < COUNT_END) {
-				if((PIND & mask) == 0) {
-					ip++;
-					jp = 0;
-				} else {
-					ip = 0;
-					jp++;
-				}
-				if (jp > COUNT_PERIOD) break;
-			}
-			if(ip>=COUNT_END)
 			switch (i) {
 				case 1:
 					return 13;
@@ -460,7 +419,7 @@ uchar usbFunctionWrite(uchar *data, uchar len) {
 
 int	main(void)
 {
-uchar   key, lastKey = 0, keyDidChange = 0, idleCounter = 0;
+uchar   key = 0, lastKey = 0, keyDidChange = 0, idleCounter = 0, debounced = 0, timer = 0;
 	wdt_enable(WDTO_1S);
     hardwareInit();
 	//если флаг инициализации стоит - загружаем настройки
@@ -479,11 +438,6 @@ uchar   key, lastKey = 0, keyDidChange = 0, idleCounter = 0;
 		DBG1(0x02, 0, 0);
 		wdt_reset();
 		usbPoll();
-        key = keyPressed();
-        if(lastKey != key){
-            lastKey = key;
-            keyDidChange = 1;
-        }
         if(TIFR & (1<<TOV0)){   /* 22 ms timer */
             TIFR = 1<<TOV0;
             if(idleRate != 0){
@@ -494,11 +448,21 @@ uchar   key, lastKey = 0, keyDidChange = 0, idleCounter = 0;
                     keyDidChange = 1;
                 }
             }
+			if ( ++timer > 3 ) {
+				timer = 0;
+				debounced = 1;
+			}
         }
-        if(keyDidChange && usbInterruptIsReady()){
-			buildReport(key);
+        key = keyPressed();
+		if(lastKey != key){
+	        lastKey = key;
+	        keyDidChange = 1;
+        }
+        if(debounced && keyDidChange && usbInterruptIsReady()){
+			buildReport(lastKey);
 			usbSetInterrupt(reportBuffer, sizeof(reportBuffer));
 			keyDidChange = 0;
+			debounced = 0;
         }
 	}
 	return 0;
