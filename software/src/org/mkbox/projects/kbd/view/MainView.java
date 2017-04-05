@@ -1,6 +1,7 @@
 package org.mkbox.projects.kbd.view;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.mkbox.projects.kbd.MainApp;
 import org.mkbox.projects.kbd.model.KeyList;
@@ -90,9 +91,11 @@ public class MainView {
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
 		fileChooser.getExtensionFilters().add(extFilter);
-		File oldFile = new File(mainApp.getKeyListFilePath().getParent());
-		if( oldFile.isDirectory() ) {
-			fileChooser.setInitialDirectory((new File(mainApp.getKeyListFilePath().getParent())));
+		try {
+			fileChooser.setInitialDirectory((new File(".")).getCanonicalFile());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		File file = fileChooser.showOpenDialog(mainApp.getPrimaryStage());
 		if( file != null ) {
@@ -107,9 +110,11 @@ public class MainView {
 		FileChooser fileChooser = new FileChooser();
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
 		fileChooser.getExtensionFilters().add(extFilter);
-		File oldFile = new File(mainApp.getKeyListFilePath().getParent());
-		if( oldFile.isDirectory() ) {
-			fileChooser.setInitialDirectory((new File(mainApp.getKeyListFilePath().getParent())));
+		try {
+			fileChooser.setInitialDirectory((new File(".")).getCanonicalFile());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		File file = fileChooser.showSaveDialog(mainApp.getPrimaryStage());
 		if( file != null ) {

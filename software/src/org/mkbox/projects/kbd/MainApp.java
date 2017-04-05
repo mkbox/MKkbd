@@ -306,16 +306,6 @@ public class MainApp extends Application {
 		return keyData;
 	}
 	
-	public File getKeyListFilePath() {
-		Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
-	    String filePath = prefs.get("filePath", null);
-	    if (filePath != null) {
-	        return new File(System.getProperty("user.dir"));
-	    } else {
-	        return null;
-	    }
-	}
-	
 	public boolean showHelpDialog() {
 		try{
 			FXMLLoader loader = new FXMLLoader();
